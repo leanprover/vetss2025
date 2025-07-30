@@ -45,14 +45,9 @@ example : run σ (imp {skip;}) n = some σ := by
 /-- Helper lemma for the next proof -/
 theorem bind_eq_some : (Option.bind x f = some y) ↔ (∃ a, x = some a ∧ f a = some y) := by
   constructor
-  . simp [Option.bind]
-    intro eq
-    split at eq
-    next => simp at eq
-    next =>
-      simp [*]
-  . intro ⟨a, x_is_some, f_is_some⟩
-    simp [*]
+  . simp only [Option.bind]
+    grind
+  . grind
 
 /--
 `run` is correct: if it returns an answer, then that final state can be reached by the big-step
@@ -82,32 +77,22 @@ theorem run_some_implies_big_step : run σ s n = some σ' → BigStep σ s σ' :
     . simp [bind_eq_some] at next_env
       let ⟨σ'', run_s1_eq, run_while_eq⟩ := next_env
       apply BigStep.whileTrue (v := v)
-      . simp [*]
+      . grind
       · assumption
       . exact ih1 run_s1_eq
-      . exact ih2 _ run_while_eq
+      . grind
 
 theorem run_some_more_fuel (h : n ≤ m) : run σ s n = some σ' → run σ s m = some σ' := by
   induction σ, s, n using run.induct generalizing σ' m
   all_goals simp_all [run, bind_eq_some]
   case case4 ih1 ih2 =>
-    intro x _
-    split <;> (intro; simp_all)
+    grind
   case case5 ih1 ih2 =>
     cases m
-    case zero => simp at h
+    case zero => grind
     case succ m =>
-      simp at h
-      simp (config := {contextual:= true}) [run, bind_eq_some]
-      intro x _
-      split
-      · simp
-      · simp [bind_eq_some]
-        intro x s1 s2
-        apply Exists.intro x
-        constructor
-        · apply ih1 h s1
-        · apply ih2 _ h s2
+      simp [run]
+      grind [bind_eq_some]
 
 theorem big_step_implies_run_some (h : BigStep σ s σ') : ∃ n, run σ s n = some σ':= by
   induction h
@@ -116,10 +101,8 @@ theorem big_step_implies_run_some (h : BigStep σ s σ') : ∃ n, run σ s n = s
     let ⟨n1, ih1⟩ := ih1
     let ⟨n2, ih2⟩ := ih2
     apply Exists.intro (max n1 n2)
-    rw [run]
-    rw [run_some_more_fuel (by omega) ih1]
-    rw [Option.bind_eq_bind, Option.bind_some]
-    rw [run_some_more_fuel (by omega) ih2]
+    rw [run, Option.bind_eq_bind]
+    grind [<= run_some_more_fuel]
   case «whileTrue» v σ''' body σ' c σ'' hc hnn _ _ ih1 ih2 =>
     let ⟨n1, ih1⟩ := ih1
     let ⟨n2, ih2⟩ := ih2
@@ -127,9 +110,7 @@ theorem big_step_implies_run_some (h : BigStep σ s σ') : ∃ n, run σ s n = s
     simp [run, hc]
     split
     · contradiction
-    · rw [run_some_more_fuel (by omega) ih1]
-      simp
-      rw [run_some_more_fuel (by omega) ih2]
+    · grind [<= run_some_more_fuel]
   case «whileFalse» h =>
     apply Exists.intro 1
     simp [run, h]

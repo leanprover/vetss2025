@@ -90,12 +90,6 @@ theorem run_some_implies_big_step : run σ s n = some σ' → BigStep σ s σ' :
 theorem run_some_more_fuel (h : n ≤ m) : run σ s n = some σ' → run σ s m = some σ' := by
   induction σ, s, n using run.induct generalizing σ' m
   all_goals simp_all [run, bind_eq_some]
-  case case2 ih1 ih2 =>
-    intros σ'' s1 s2
-    apply Exists.intro σ''
-    constructor
-    · exact ih1 h s1
-    · exact ih2 σ'' h s2
   case case4 ih1 ih2 =>
     intro x _
     split <;> (intro; simp_all)
@@ -124,7 +118,7 @@ theorem big_step_implies_run_some (h : BigStep σ s σ') : ∃ n, run σ s n = s
     apply Exists.intro (max n1 n2)
     rw [run]
     rw [run_some_more_fuel (by omega) ih1]
-    rw [Option.bind_eq_bind, Option.some_bind]
+    rw [Option.bind_eq_bind, Option.bind_some]
     rw [run_some_more_fuel (by omega) ih2]
   case «whileTrue» v σ''' body σ' c σ'' hc hnn _ _ ih1 ih2 =>
     let ⟨n1, ih1⟩ := ih1

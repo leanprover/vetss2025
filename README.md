@@ -1,7 +1,6 @@
 # Lean tutorial
 
-This is the accompanying code for the invited lean tutorial held at [VSTTE
-2024](https://www.soundandcomplete.org/vstte2024.html) by Sebastian Ullrich and Joachim Breitner.
+This is the accompanying code for the invited Lean tutorial held at the  [VeTSS Summer School 2025](https://vetss.org.uk/vss25-the-lean-programming-language-and-theorem-prover/) by Sebastian Ullrich and Joachim Breitner.
 
 [Introductory slides](https://docs.google.com/presentation/d/e/2PACX-1vRHeNJieYkbz4tWLce--Dm7GTRZvamSEMI1cmcPVEiJMphtDmaffJ7YENAOi6155ypt08DmifD7NYFK/pub?start=false&loop=false&delayms=3000)
 
@@ -130,6 +129,9 @@ The branch `exercises` contains the result of solving all the exercises.
    demo of using a verified bit blaster to quickly prove theorems.
 
 ## Acknowledgments
+
+This tutorial was previously held at [VSTTE
+2024](https://www.soundandcomplete.org/vstte2024.html) by Sebastian Ullrich and Joachim Breitner.
 
 This content is based on [material written by David Thrane
 Christiansen](https://github.com/david-christiansen/lean-fkbh-24-2) for the tutorial "Lean for the

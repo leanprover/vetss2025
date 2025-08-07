@@ -137,7 +137,8 @@ theorem optimize_ok : BigStep σ s σ' → BigStep σ s.optimize σ' := by
       split
       next heq2 =>
         cases heq2
-        simp [Expr.optimize_ok, heq1, Expr.eval] at heval
+        rw [Expr.optimize_ok, heq1] at heval
+        simp [Expr.eval] at heval
         simp [← heval]
       · apply BigStep.assign
         rw [← @Expr.optimize_ok']

@@ -1,9 +1,8 @@
 # Lean tutorial
 
-**This material is still WIP.**
+This is the accompanying code for the invited Lean tutorial held at the  [VeTSS Summer School 2025](https://vetss.org.uk/vss25-the-lean-programming-language-and-theorem-prover/) by Sebastian Ullrich and Joachim Breitner.
 
-This is the accompanying code for the invited lean tutorial held at [VSTTE
-2024](https://www.soundandcomplete.org/vstte2024.html) by Sebastian Ullrich and Joachim Breitner.
+[Introductory slides](https://docs.google.com/presentation/d/e/2PACX-1vRHeNJieYkbz4tWLce--Dm7GTRZvamSEMI1cmcPVEiJMphtDmaffJ7YENAOi6155ypt08DmifD7NYFK/pub?start=false&loop=false&delayms=3000)
 
 ## Overview
 
@@ -11,7 +10,7 @@ In this tutorial we will see the following features of Lean
 
 * basic functional programming
 * extensible custom syntax for domain-specific functions
-* inductive predicates and proofs 
+* inductive predicates and proofs
 
 The example use-case is a standard task in programming language theory: Embedding a small imperative
 language, defining its semantics, and reasoning about it.
@@ -43,38 +42,45 @@ are suggested tasks that you could try:
 
 ### First hands-on break
 
-Suggested tasks, in rough order of difficulty.
+Suggested tasks, in rough order of difficulty. These are invitations to play around with Lean; unless you have prior experience with it or very similar tools like Isabelle or Coq, it is not likely to finish them without help.
+
+The branch `exercises` contains the result of solving all the exercises.
 
 * Add unary operations (negation, logical not) to the expression language.
 
-* Let `Lean.Expr.optimize` apply rules like `0 + x = x`, `1 * x = x`.
+* Let `Expr.optimize` apply rules like `0 + x = x`, `1 * x = x`.
 
   Hints:
 
   - It may be helpful to define a (non-recursive) function `Expr.optOp` with the same type as
     `Expr.op`, that serves as a “smart constructor”. Pattern matching can be elegant here!
   - In general it is advisible to write a separate theorem about each involved function
-    (`BinOp.apply`, `Expr.optOp`, `Expr.optimize`) separately than to do it all in one go. 
+    (`BinOp.apply`, `Expr.optOp`, `Expr.optimize`) separately than to do it all in one go.
     If these theorems are set up just right, they are good `@[simp]` lemmas, and will make the
     subsequent proof easy.
+
+* Prove that `Expr.optimize` is idempotent: `(e : Expr) : e.optimize.optimize = e.optimize`.
 
 * Write a function `Expr.hasDiv : Expr → Bool` that checks if division is used in the expression.
 
   Prove that if an expression has no division, then `Expr.eval` will always return a result.
 
-  Hint: There are various ways of phrasing this. You can use `Option.isSome` and write a theorem about
-  `Option.bind` and `Option.isSome`. Or you can define `Expr.eval'` that returns `Value` (no
-  `Option`) and prove that for expressions without division, the result of `Expr.eval` is
-  `Option.some` of the value returned by `Expr.eval'`.
+  Hint: There are various ways of phrasing this. You can use `Option.isSome`.
+  Or you can define `Expr.eval'` that returns `Value` (no `Option`) and prove that for expressions
+  without division, the result of `Expr.eval` is `Option.some` of the value returned by `Expr.eval'`.
 
   Food for thought: How does this task relate to the previous task and the optimization `0 * x = 0`?
   If you have done both tasks, can you combine them?
 
-  
+
 ### Second hands-on break
 
-* Add nice input syntax for `Env.get σ "x"` and `Env.set`, e.g. `σ[x]` and `σ[x := e]` and update
-  some of the proof statements.
+* Add nice input syntax for `Env.get σ "x"` and `Env.set`, e.g. `σ[[x]]` and `σ[[x := e]]` and
+  update some of the proof statements.
+
+  Instead of `syntax` and `macro_rules` you can also try to use the `notation` command as documented
+  at <https://lean-lang.org/lean4/doc/notation.html>; this will also make the new syntax show up in
+  the InfoView (in other words, it will also delaborate).
 
 * Add the optimization that replaces `x := x` by `skip` to `Stmt.optimize`.
 
@@ -86,7 +92,8 @@ Suggested tasks, in rough order of difficulty.
 
   You may want to prove `@[simp] theorem set_get_same {σ : Env} : σ.set x (σ.get x) = σ` for that.
   To prove an equality on `Env`, add the `@[ext]` attribute to the `Env` structure. This will allow
-  you to use `apply Env.ext` (or even start the proof with `ext y : 2` – check the docstring to see what that does.)
+  you to use `apply Env.ext` to prove that two environments are the same.
+  (It also allows you to start the proof with `ext y : 2` – check the docstring to see what that does.)
 
 * (Short but tricky):
 
@@ -95,11 +102,13 @@ Suggested tasks, in rough order of difficulty.
   def loop := imp {while (1) {skip;}}
   theorem infinite_loop : ¬ BigStep σ loop σ' := by
   ```
-  
+
   Hint:
 
-  Rephrase the statement so that the three arguments to `BigStep` are variables, so that `induction` works. You can do that using a helper theorem that you finally apply, or explore the `generalize` tactic.
- 
+  Rephrase the statement so that the three arguments to `BigStep` are variables, so that `induction`
+  works. You can do that using a helper theorem that you finally apply, or explore the `generalize`
+  tactic.
+
 ## Code Structure
 
  - `Imp/Expr.lean` re-exports the expression language:
@@ -123,6 +132,9 @@ Suggested tasks, in rough order of difficulty.
    demo of using a verified bit blaster to quickly prove theorems.
 
 ## Acknowledgments
+
+This tutorial was previously held at [VSTTE
+2024](https://www.soundandcomplete.org/vstte2024.html) by Sebastian Ullrich and Joachim Breitner.
 
 This content is based on [material written by David Thrane
 Christiansen](https://github.com/david-christiansen/lean-fkbh-24-2) for the tutorial "Lean for the

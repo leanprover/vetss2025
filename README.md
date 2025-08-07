@@ -42,7 +42,7 @@ are suggested tasks that you could try:
 
 ### First hands-on break
 
-Suggested tasks, in rough order of difficulty. These are invitations to play around with Lean; unless you have prior experience with it or very similar tools like Isabelle or Coq, it is not likely to finisht them without help.
+Suggested tasks, in rough order of difficulty. These are invitations to play around with Lean; unless you have prior experience with it or very similar tools like Isabelle or Coq, it is not likely to finish them without help.
 
 The branch `exercises` contains the result of solving all the exercises.
 
@@ -80,7 +80,8 @@ The branch `exercises` contains the result of solving all the exercises.
   update some of the proof statements.
 
   Instead of `syntax` and `macro_rules` you can also try to use the `notation` command as documented
-  at <https://lean-lang.org/lean4/doc/notation.html>; this will also make the new syntax show up in the InfoView (in other words, it will also delaborate).
+  at <https://lean-lang.org/lean4/doc/notation.html>; this will also make the new syntax show up in
+  the InfoView (in other words, it will also delaborate).
 
 * Add the optimization that replaces `x := x` by `skip` to `Stmt.optimize`.
 
@@ -92,7 +93,8 @@ The branch `exercises` contains the result of solving all the exercises.
 
   You may want to prove `@[simp] theorem set_get_same {σ : Env} : σ.set x (σ.get x) = σ` for that.
   To prove an equality on `Env`, add the `@[ext]` attribute to the `Env` structure. This will allow
-  you to use `apply Env.ext` (or even start the proof with `ext y : 2` – check the docstring to see what that does.)
+  you to use `apply Env.ext` to prove that two environments are the same.
+  (It also allows you to start the proof with `ext y : 2` – check the docstring to see what that does.)
 
 * (Short but tricky):
 
@@ -104,7 +106,9 @@ The branch `exercises` contains the result of solving all the exercises.
 
   Hint:
 
-  Rephrase the statement so that the three arguments to `BigStep` are variables, so that `induction` works. You can do that using a helper theorem that you finally apply, or explore the `generalize` tactic.
+  Rephrase the statement so that the three arguments to `BigStep` are variables, so that `induction`
+  works. You can do that using a helper theorem that you finally apply, or explore the `generalize`
+  tactic.
 
 ## Code Structure
 

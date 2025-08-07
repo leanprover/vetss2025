@@ -42,18 +42,6 @@ def run (σ : Env) (s : Stmt) (n : Nat) : Option Env :=
 example : run σ (imp {skip;}) n = some σ := by
   simp [run]
 
-/-- Helper lemma for the next proof -/
-theorem bind_eq_some : (Option.bind x f = some y) ↔ (∃ a, x = some a ∧ f a = some y) := by
-  constructor
-  . simp [Option.bind]
-    intro eq
-    split at eq
-    next => simp at eq
-    next =>
-      simp [*]
-  . intro ⟨a, x_is_some, f_is_some⟩
-    simp [*]
-
 /--
 `run` is correct: if it returns an answer, then that final state can be reached by the big-step
 semantics. This is not total correctness - `run` could always return `none` - but it does increase
@@ -61,7 +49,7 @@ confidence.
 -/
 theorem run_some_implies_big_step : run σ s n = some σ' → BigStep σ s σ' := by
   intro term
-  induction σ, s, n using run.induct generalizing σ' <;> simp_all [run, bind_eq_some]
+  induction σ, s, n using run.induct generalizing σ' <;> simp_all [run, Option.bind_eq_some_iff]
   case case2 σ n s1 s2 ih1 ih2 =>
     let ⟨σ'', run_s1, run_s2⟩ := term
     -- Right nesting needed to run the first `trivial` before the second `apply_assumption`, which solves a metavariable
@@ -79,7 +67,7 @@ theorem run_some_implies_big_step : run σ s n = some σ' → BigStep σ s σ' :
     let ⟨v, has_val, next_env⟩ := term
     split at next_env
     . simp_all [BigStep.whileFalse]
-    . simp [bind_eq_some] at next_env
+    . simp [Option.bind_eq_some_iff] at next_env
       let ⟨σ'', run_s1_eq, run_while_eq⟩ := next_env
       apply BigStep.whileTrue (v := v)
       . simp [*]
@@ -89,7 +77,7 @@ theorem run_some_implies_big_step : run σ s n = some σ' → BigStep σ s σ' :
 
 theorem run_some_more_fuel (h : n ≤ m) : run σ s n = some σ' → run σ s m = some σ' := by
   induction σ, s, n using run.induct generalizing σ' m
-  all_goals simp_all [run, bind_eq_some]
+  all_goals simp_all [run, Option.bind_eq_some_iff]
   case case4 ih1 ih2 =>
     intro x _
     split <;> (intro; simp_all)
@@ -98,11 +86,11 @@ theorem run_some_more_fuel (h : n ≤ m) : run σ s n = some σ' → run σ s m 
     case zero => simp at h
     case succ m =>
       simp at h
-      simp (config := {contextual:= true}) [run, bind_eq_some]
+      simp (config := {contextual:= true}) [run, Option.bind_eq_some_iff]
       intro x _
       split
       · simp
-      · simp [bind_eq_some]
+      · simp [Option.bind_eq_some_iff]
         intro x s1 s2
         apply Exists.intro x
         constructor

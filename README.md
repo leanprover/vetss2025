@@ -65,10 +65,9 @@ The branch `exercises` contains the result of solving all the exercises.
 
   Prove that if an expression has no division, then `Expr.eval` will always return a result.
 
-  Hint: There are various ways of phrasing this. You can use `Option.isSome` and write a theorem about
-  `Option.bind` and `Option.isSome`. Or you can define `Expr.eval'` that returns `Value` (no
-  `Option`) and prove that for expressions without division, the result of `Expr.eval` is
-  `Option.some` of the value returned by `Expr.eval'`.
+  Hint: There are various ways of phrasing this. You can use `Option.isSome`.
+  Or you can define `Expr.eval'` that returns `Value` (no `Option`) and prove that for expressions
+  without division, the result of `Expr.eval` is `Option.some` of the value returned by `Expr.eval'`.
 
   Food for thought: How does this task relate to the previous task and the optimization `0 * x = 0`?
   If you have done both tasks, can you combine them?

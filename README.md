@@ -2,7 +2,7 @@
 
 This is the accompanying code for the invited Lean tutorial held at the  [VeTSS Summer School 2025](https://vetss.org.uk/vss25-the-lean-programming-language-and-theorem-prover/) by Sebastian Ullrich and Joachim Breitner.
 
-[Introductory slides](https://docs.google.com/presentation/d/e/2PACX-1vRHeNJieYkbz4tWLce--Dm7GTRZvamSEMI1cmcPVEiJMphtDmaffJ7YENAOi6155ypt08DmifD7NYFK/pub?start=false&loop=false&delayms=3000)
+[Introductory slides](https://docs.google.com/presentation/d/e/2PACX-1vQTQfZk0pXchrCnZrMy3sMN9eR9pjitHbIkM_xbK55Ha53qYVgv3Ash7gNloYZW9aBEihtIMRohMrpn/pub?start=false&loop=false&delayms=3000)
 
 ## Overview
 

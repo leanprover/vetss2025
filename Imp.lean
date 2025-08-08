@@ -24,17 +24,17 @@ def popcount : Stmt := imp {
 }
 
 
-def pop_spec (x : BitVec 32) : BitVec 32 :=
+def pop_spec (x : UInt32) : UInt32 :=
   go x 0 32
 where
-  go (x : BitVec 32) (pop : BitVec 32) (i : Nat) : BitVec 32 :=
+  go (x : UInt32) (pop : UInt32) (i : Nat) : UInt32 :=
     match i with
     | 0 => pop
     | i + 1 =>
-      let pop := pop + (x &&& 1#32)
-      go (x >>> 1#32) pop i
+      let pop := pop + (x &&& 1)
+      go (x >>> 1) pop i
 
-def test_popcount (x : BitVec 32) : Bool :=
+def test_popcount (x : UInt32) : Bool :=
   run (Env.init x) popcount 2024 |>.map (·.get "x" == pop_spec x) |>.getD false
 
 /-- info: true -/

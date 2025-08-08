@@ -39,7 +39,6 @@ partial def delabExprInner : DelabM (TSyntax `exp) := do
         else if let .lit (.natVal n') := n then
           pure <| ⟨Syntax.mkNumLit (toString n') |>.raw⟩
         else withAppArg `(exp| ~$(← delab))
-      | BitVec.ofNat _ _ => (⟨·.raw⟩) <$> (withAppArg <| withAppArg <| delab)
       | _ =>
         `(exp| ~(Expr.const $(← withAppArg delab)))
     | Expr.var _ => do

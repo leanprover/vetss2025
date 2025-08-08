@@ -5,7 +5,7 @@ open Lean
 namespace Imp
 
 /-- Values stored in memory - 32-bit integers -/
-abbrev Value := BitVec 32
+abbrev Value := UInt32
 
 /-- An environment maps variables names to their values (no pointers) -/
 structure Env where

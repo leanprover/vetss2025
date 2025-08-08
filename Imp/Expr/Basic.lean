@@ -11,7 +11,7 @@ deriving Repr, DecidableEq
 
 /-- Expressions -/
 inductive Expr where
-  | const (i : BitVec 32)
+  | const (i : UInt32)
   | var (name : String)
   | op (op : BinOp) (e1 e2 : Expr)
 deriving Repr, DecidableEq

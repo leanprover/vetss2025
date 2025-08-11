@@ -27,12 +27,9 @@ def popcount : Stmt := imp {
 def pop_spec (x : UInt32) : UInt32 :=
   go x 0 32
 where
-  go (x : UInt32) (pop : UInt32) (i : Nat) : UInt32 :=
-    match i with
+  go (x : UInt32) (pop : UInt32) : Nat → UInt32
     | 0 => pop
-    | i + 1 =>
-      let pop := pop + (x &&& 1)
-      go (x >>> 1) pop i
+    | i + 1 => go (x >>> 1) (pop + (x &&& 1)) i
 
 def test_popcount (x : UInt32) : Bool :=
   run (Env.init x) popcount |>.map (·.get "x" == pop_spec x) |>.getD false
@@ -52,5 +49,7 @@ def test_popcount (x : UInt32) : Bool :=
 
 
 theorem popCount_correct : test_popcount x := by
-  simp! [test_popcount, popcount, pop_spec, Stmt.run]
+  -- Let's unfold all function definitions. This unrolls the loop in `pop_spec`.
+  simp [test_popcount, popcount, pop_spec, Stmt.run, Expr.eval, BinOp.apply, pop_spec.go]
+  -- Now bitblasting can solve the goal
   bv_decide

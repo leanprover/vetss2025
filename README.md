@@ -42,7 +42,12 @@ are suggested tasks that you could try:
 
 ### First hands-on break
 
-Suggested tasks, in rough order of difficulty. These are invitations to play around with Lean; unless you have prior experience with it or very similar tools like Isabelle or Coq, it is not likely to finish them without help.
+Suggested tasks, in rough order of difficulty. These are invitations to play around with Lean;
+unless you have prior experience with it or very similar tools like Isabelle or Coq, it is not
+likely to finish them without help. Maybe team up!
+
+The tasks have a programming and a proving component. You can also choose to focus on the
+programming part.
 
 The branch `exercises` contains the result of solving all the exercises.
 
@@ -79,8 +84,8 @@ The branch `exercises` contains the result of solving all the exercises.
   update some of the proof statements.
 
   Instead of `syntax` and `macro_rules` you can also try to use the `notation` command as documented
-  at <https://lean-lang.org/lean4/doc/notation.html>; this will also make the new syntax show up in
-  the InfoView (in other words, it will also delaborate).
+  at <https://lean-lang.org/doc/reference/latest//Notations-and-Macros/Notations/#notations>; this
+  will also make the new syntax show up in the InfoView (in other words, it will also delaborate).
 
 * Add the optimization that replaces `x := x` by `skip` to `Stmt.optimize`.
 
@@ -125,9 +130,9 @@ The branch `exercises` contains the result of solving all the exercises.
      syntax in its output (not part of tutorial, but nice to have!)
    - `Imp/Stmt/Optimize.lean` contains an optimization pass (unverified)
    - `Imp/Stmt/BigStep.lean` contains big-step operational semantics,
-     and uses them to prove the optimizer correct. It also contains a
-     function that implements these semantics, which can be used to
-     run programs.
+     and uses them to prove the optimizer correct.
+   - `Imp/Stmt/Run.lean` contains an executable interpreter that follows
+     this semantics, and is proven (totally) correct.
  - `Imp.lean` imports the other libraries, and contains a concluding
    demo of using a verified bit blaster to quickly prove theorems.
 

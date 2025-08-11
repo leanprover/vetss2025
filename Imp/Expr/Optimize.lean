@@ -31,7 +31,7 @@ theorem optimize_ok (e : Expr) : e.eval σ = e.optimize.eval σ := by
 Optimization doesn't change the meaning of any expression
 -/
 theorem optimize_ok' (e : Expr) : e.eval σ = e.optimize.eval σ := by
-  induction e using optimize.induct <;> simp [eval, optimize, *]
+  fun_induction optimize <;> simp [eval, optimize, *]
 
 -- Anticipating changes not yet in this release
 set_option grind.warning false
@@ -39,4 +39,4 @@ set_option grind.warning false
   rfl
 
 theorem optimize_ok'' (e : Expr) : e.optimize.eval σ = e.eval σ := by
-  induction e using optimize.induct <;> grind [eval, optimize]
+  fun_induction optimize <;> grind [eval, optimize]

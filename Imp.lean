@@ -35,7 +35,7 @@ where
       go (x >>> 1) pop i
 
 def test_popcount (x : UInt32) : Bool :=
-  run (Env.init x) popcount 2024 |>.map (·.get "x" == pop_spec x) |>.getD false
+  run (Env.init x) popcount |>.map (·.get "x" == pop_spec x) |>.getD false
 
 /-- info: true -/
 #guard_msgs in

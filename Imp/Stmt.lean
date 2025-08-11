@@ -6,3 +6,4 @@ import Imp.Stmt.Delab
 import Imp.Stmt.Optimize
 import Imp.Stmt.BigStep
 import Imp.Stmt.Run
+import Imp.Stmt.RunPartial

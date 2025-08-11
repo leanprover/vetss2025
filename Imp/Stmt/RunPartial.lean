@@ -83,7 +83,6 @@ theorem big_step_implies_run_some (h : BigStep σ s σ') : run σ s = some σ':=
   case «whileTrue» v σ''' body σ' c σ'' hc hnn _ _ ih1 ih2 =>
     rw [run]
     simp [hc, *]
-    simp_all
   case «whileFalse» h =>
     rw [run]
     simp [h]

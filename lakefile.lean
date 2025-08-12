@@ -7,4 +7,4 @@ package leanFkbh24 where
 
 @[default_target]
 lean_lib Imp where
-
+  leanOptions := #[⟨`grind.warning,false⟩]

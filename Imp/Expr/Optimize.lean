@@ -1,5 +1,6 @@
 import Imp.Expr.Basic
 import Imp.Expr.Eval
+import Imp.Util
 
 namespace Imp.Expr
 
@@ -32,11 +33,6 @@ Optimization doesn't change the meaning of any expression
 -/
 theorem optimize_ok' (e : Expr) : e.eval σ = e.optimize.eval σ := by
   fun_induction optimize <;> simp [eval, optimize, *]
-
--- Anticipating changes not yet in this release
-set_option grind.warning false
-@[grind] theorem bind_eq_bind {α β : Type} (x : Option α) (f : α → Option β) : x >>= f = Option.bind x f :=
-  rfl
 
 theorem optimize_ok'' (e : Expr) : e.optimize.eval σ = e.eval σ := by
   fun_induction optimize <;> grind [eval, optimize]

@@ -40,7 +40,7 @@ partial def delabExprInner : DelabM (TSyntax `exp) := do
           pure <| ⟨Syntax.mkNumLit (toString n') |>.raw⟩
         else withAppArg `(exp| ~$(← delab))
       | _ =>
-        `(exp| ~(Expr.const $(← withAppArg delab)))
+        `(exp| ~($(← delabApp)))
     | Expr.var _ => do
       let x ← withAppArg delabNameInner
       `(exp|$x:varname)
@@ -61,7 +61,7 @@ partial def delabExprInner : DelabM (TSyntax `exp) := do
       | BinOp.rsh => `(exp| $s1 >>> $s2)
       | BinOp.band => `(exp| $s1 &&& $s2)
       | BinOp.bor => `(exp| $s1 ||| $s2)
-      | _ => `(exp|~(Expr.op $(← withAppFn <| withAppFn <| withAppArg delab) $(← withAppFn <| withAppArg delab) $(← withAppArg delab)))
+      | _ => `(exp|~($(← delabApp)))
     | _ =>
       `(exp| ~$(← delab))
   annAsTerm stx
@@ -75,6 +75,7 @@ partial def delabExpr : Delab := do
     | Expr.op _ _ _ => true
     | _ => false
   match ← delabExprInner with
+  | `(exp|~($e)) => pure e
   | `(exp|~$e) => pure e
   | e => `(term|expr {$(⟨e⟩)})
 
@@ -108,3 +109,13 @@ expr { ~x * ~x } : Expr
 /-- info: expr { x + y * z } : Expr -/
 #guard_msgs in
 #check expr { x + y * z }
+
+/- Fall back graciously to standard delaboration outside the syntax fragment. -/
+
+/-- info: fun i => const i : UInt32 → Expr -/
+#guard_msgs in
+#check fun i => Expr.const i
+
+/-- info: fun op => Imp.Expr.op op (expr { 0 }) (expr { 1 }) : BinOp → Expr -/
+#guard_msgs in
+#check fun op => Expr.op op (.const 0) (.const 1)
